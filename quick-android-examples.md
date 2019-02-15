@@ -3,6 +3,9 @@
 
 
 
+    typealias OnSuccessListener<T> = (T) -> Unit
+    typealias OnErrorListener = (Exception) -> Unit
+
 
 ### ViewModel
 
