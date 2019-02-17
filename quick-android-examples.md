@@ -1,11 +1,12 @@
 # Quick Android Examples
 
-
-
-
     typealias OnSuccessListener<T> = (T) -> Unit
     typealias OnErrorListener = (Exception) -> Unit
 
+    private val logTag by lazy { "App: " + this.javaClass.simpleName }
+    fun log(message: String) {
+        Log.d(logTag, message)
+    }
 
 ### ViewModel
 
@@ -26,7 +27,7 @@
     }
 
     // Usage
-    val viewModel = ViewModelProviders.of(this).get(BusinessDetailsViewModel::class.java)
+    private val viewModel by lazy { ViewModelProviders.of(this).get(BusinessDetailsViewModel::class.java) }
     viewModel.getBusiness().observe(this, Observer { business ->
         updateView(business)
     })
