@@ -5,6 +5,12 @@ import android.view.MotionEvent
 import android.view.ViewConfiguration
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * This class is particularly useful when a RecyclerView is inside a ViewPager and the scrolling conflicts
+ * with each other.
+ *
+ * Usage: `myRecyclerView.addOnItemTouchListener(TouchSlopRecyclerViewOnItemTouchListener(requireContext()))
+ */
 class TouchSlopRecyclerViewOnItemTouchListener(context: Context) : RecyclerView.OnItemTouchListener {
 
     private var isScrolling = false
