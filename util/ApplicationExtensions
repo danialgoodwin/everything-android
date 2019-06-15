@@ -1,0 +1,36 @@
+package dev.goodwin.android.common
+
+import android.app.ActivityManager
+import android.app.Application
+import android.app.NotificationManager
+import android.os.Build
+import android.util.Log
+import androidx.core.content.getSystemService
+import androidx.preference.PreferenceManager
+import org.jetbrains.anko.defaultSharedPreferences
+
+fun Application.removeAppData() {
+    Log.d("App: Application", "removeAppData()")
+    try {
+        this.getSystemService<NotificationManager>()?.cancelAll()
+
+        this.defaultSharedPreferences.edit().clear().apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply()
+
+        this.cacheDir.deleteRecursively()
+        this.codeCacheDir.deleteRecursively()
+        this.filesDir.deleteRecursively()
+        this.noBackupFilesDir.deleteRecursively()
+        for (database in this.databaseList()) {
+            val isDatabaseDeleteSuccess = this.deleteDatabase(database)
+            Log.d("App: Application", "removeAppData(), isDatabaseDeleteSuccess=$isDatabaseDeleteSuccess, database=$database")
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            this.dataDir.deleteRecursively()
+        }
+    } catch (e: Exception) {
+        Log.d("App: Application", "removeAppData(), Error=${e.message}")
+        // This is not ran by default because it closes the app in order to remove all data
+        this.getSystemService<ActivityManager>()?.clearApplicationUserData()
+    }
+}
